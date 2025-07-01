@@ -1,0 +1,122 @@
+{
+  "id": null,
+  "title": "Roman Numeral Converter Dashboard",
+  "tags": [
+    "roman-numeral",
+    "api"
+  ],
+  "style": "dark",
+  "timezone": "browser",
+  "panels": [
+    {
+      "id": 1,
+      "title": "Request Rate",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(roman_numeral_requests_total[5m])",
+          "legendFormat": "{{method}} {{endpoint}}"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": 2,
+      "title": "Response Time",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, rate(roman_numeral_request_duration_seconds_bucket[5m]))",
+          "legendFormat": "95th percentile"
+        },
+        {
+          "expr": "histogram_quantile(0.50, rate(roman_numeral_request_duration_seconds_bucket[5m]))",
+          "legendFormat": "50th percentile"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      }
+    },
+    {
+      "id": 3,
+      "title": "Error Rate",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "(sum(rate(roman_numeral_conversions_failure_total[5m])) or vector(0))/((sum(rate(roman_numeral_conversions_success_total[5m])) or vector(0))+(sum(rate(roman_numeral_conversions_failure_total[5m])) or vector(0)))",
+          "legendFormat": "{{error_type}}"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 11,
+        "x": 0,
+        "y": 8
+      }
+    },
+    {
+      "id": 4,
+      "title": "Active Requests",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "roman_numeral_active_requests"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 2,
+        "x": 11,
+        "y": 8
+      }
+    },
+    {
+      "id": 5,
+      "title": "Success Rate",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "(sum(rate(roman_numeral_conversions_success_total[5m])) or vector(0))/((sum(rate(roman_numeral_conversions_success_total[5m])) or vector(0))+(sum(rate(roman_numeral_conversions_failure_total[5m])) or vector(0)))",
+          "legendFormat": ""
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 11,
+        "x": 18,
+        "y": 8
+      }
+    },
+    {
+      "id": 6,
+      "title": "Input Value Distribution",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(roman_numeral_input_values_bucket[5m])",
+          "legendFormat": "{{le}}"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      }
+    }
+  ],
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "refresh": "10s"
+}
